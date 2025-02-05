@@ -1,0 +1,107 @@
+using System; 
+
+using System.Collections.Generic; 
+
+using System.ComponentModel; 
+
+using System.Data; 
+
+using System.Drawing; 
+
+using System.Linq; 
+
+using System.Text; 
+
+using System.Threading.Tasks; 
+
+using System.Windows.Forms; 
+
+  
+
+namespace lab1 
+
+{ 
+
+    public partial class Form1 : Form 
+
+    { 
+
+        public Form1() 
+
+        { 
+
+            InitializeComponent(); 
+
+  
+
+  
+
+        } 
+
+
+        private void button1_Click(object sender, EventArgs e) 
+
+        { 
+
+            if (radioButton1.Checked==true){ 
+
+            MessageBox.Show("Details\n " + textBox1.Text + "\n" + textBox2.Text + "\n" + comboBox1.Text + "\n" + dateTimePicker1.Text + "\n" + radioButton1.Text);} 
+
+            else{ 
+
+                MessageBox.Show("Details\n " + textBox1.Text + "\n" + textBox2.Text + "\n" + comboBox1.Text + "\n" + dateTimePicker1.Text + "\n" + radioButton2.Text);} 
+
+            if (checkBox1.Checked == true) 
+
+                MessageBox.Show(checkBox1.Text + "\n"); 
+
+            if (checkBox2.Checked == true) 
+
+                MessageBox.Show(checkBox2.Text + "\n"); 
+
+            if (checkBox3.Checked == true) 
+
+                MessageBox.Show(checkBox3.Text + "\n"); 
+
+            if (checkBox4.Checked == true) 
+
+                MessageBox.Show(checkBox4.Text + "\n"); 
+
+  
+
+        } 
+
+  
+
+    
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) 
+
+        { 
+
+            comboBox1.Items.Add("Haryana"); 
+
+            comboBox1.Items.Add("Tamil Nadu"); 
+
+            comboBox1.Items.Add("Punjab"); 
+
+            comboBox1.Items.Add("Rajasthan"); 
+
+            comboBox1.Items.Add("Uttar Pradesh"); 
+
+            comboBox1.Items.Add("Sikkim"); 
+
+        } 
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e) 
+
+        { 
+
+            DateTime iDate; 
+
+            iDate = dateTimePicker1.Value; 
+
+        }
+
+    } 
+
+} 
