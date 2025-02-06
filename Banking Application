@@ -1,0 +1,129 @@
+
+## **1. Login Form (LoginForm.cs)**
+csharp
+using System;
+using System.Windows.Forms;
+
+namespace BankingApp
+{
+    public partial class LoginForm : Form
+    {
+        private string storedUsername = "user";
+        private string storedPassword = "password";
+
+        public LoginForm()
+        {
+            InitializeComponent();
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            if (txtUsername.Text == storedUsername && txtPassword.Text == storedPassword)
+            {
+                DashboardForm dashboard = new DashboardForm(txtUsername.Text);
+                dashboard.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Invalid Credentials");
+            }
+        }
+
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            if (txtNewPassword.Text == txtConfirmPassword.Text && !string.IsNullOrWhiteSpace(txtNewPassword.Text))
+            {
+                storedPassword = txtNewPassword.Text;
+                MessageBox.Show("Password Changed Successfully!");
+            }
+            else
+            {
+                MessageBox.Show("Passwords do not match or are empty.");
+            }
+        }
+    }
+}
+
+
+
+## **2. Dashboard Form (DashboardForm.cs)**
+csharp
+using System;
+using System.Windows.Forms;
+
+namespace BankingApp
+{
+    public partial class DashboardForm : Form
+    {
+        private string username;
+        private decimal balance = 5000;
+        private string lastAccess = DateTime.Now.ToString();
+        private string[] transactions = { "Deposit: $100", "Withdrawal: $50", "Transfer: $200", "Deposit: $300", "Transfer: $150" };
+
+        public DashboardForm(string user)
+        {
+            InitializeComponent();
+            username = user;
+        }
+
+        private void DashboardForm_Load(object sender, EventArgs e)
+        {
+            lblUsername.Text = "User: " + username;
+            lblBalance.Text = "Balance: $" + balance;
+            lblLastAccess.Text = "Last Access: " + lastAccess;
+            lstTransactions.Items.AddRange(transactions);
+        }
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            TransferForm transferForm = new TransferForm(balance);
+            if (transferForm.ShowDialog() == DialogResult.OK)
+            {
+                balance = transferForm.UpdatedBalance;
+                lblBalance.Text = "Balance: $" + balance;
+            }
+        }
+    }
+}
+
+
+## **3. Transfer Form (TransferForm.cs)**
+csharp
+using System;
+using System.Windows.Forms;
+
+namespace BankingApp
+{
+    public partial class TransferForm : Form
+    {
+        public decimal UpdatedBalance { get; private set; }
+        private decimal balance;
+
+        public TransferForm(decimal currentBalance)
+        {
+            InitializeComponent();
+            balance = currentBalance;
+        }
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            decimal amount;
+            if (decimal.TryParse(txtAmount.Text, out amount) && amount > 0 && amount <= balance)
+            {
+                balance -= amount;
+                UpdatedBalance = balance;
+                MessageBox.Show("Transfer Successful!\nAmount: $" + amount + "\nRemaining Balance: $" + balance);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Invalid Amount or Insufficient Balance.");
+            }
+        }
+    }
+}
+
+
+
