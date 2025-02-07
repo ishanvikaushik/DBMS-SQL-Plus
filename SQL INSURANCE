@@ -1,0 +1,485 @@
+create table PERSON(driver_id# varchar(30),name varchar(50),address varchar(100), primary key (driver_id#));  
+
+create table CAR(regno varchar(20),model varchar(30),year int, primary key (regno)); 
+
+create table ACCIDENT(report_number int,accd_date date,location varchar(50), primary key (report_number)); 
+
+create table PARTICIPATED(driver_id# varchar(30),regno varchar(20),report_number int,damage_amount int, primary key (driver_id#,regno,report_number),foreign key(driver_id#)references PERSON,foreign key (regno) references CAR,foreign key (report_number) references ACCIDENT); 
+
+create table OWNS(driver_id# varchar(30),regno varchar(20), primary key (driver_id#,regno),foreign key(driver_id#) references PERSON, foreign key(regno) references CAR); 
+
+insert into PERSON values('10021','Ram','Sohna Road'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PERSON values('10026','Sita','Delhi'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into PERSON values('10045','Siya','Orchid Road'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into PERSON values('10067','Hari','Vatika'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into PERSON values('10089','Riya','Mall Road'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into CAR values('23002','Honda',2010); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into CAR values('23008','Maruti Sazuki',2010); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into CAR values('23005','Honda',2009); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into CAR values('23003','Toyota',2013); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into CAR values('23000','Honda',2004); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into ACCIDENT values(50,'14-Jan-2022','Haryana'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into ACCIDENT values(51,'16-Jan-2022','Haryana'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into ACCIDENT values(57,'20-Jan-2022','Gujarat'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into ACCIDENT values(60,'14-Feb-2022','Tamil nadu'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL>  insert into ACCIDENT values(61,'14-March-2022','Darjeeling'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into OWNS values('10021','23000'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into OWNS values('10021','23003'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into OWNS values('10045','23005'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into OWNS values('10067','23008'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into OWNS values('10089','23002'); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PARTICIPATED values('10021',23000',50,20000); 
+
+ERROR: 
+
+ORA-01756: quoted string not properly terminated 
+
+  
+
+  
+
+SQL>  insert into PARTICIPATED values('10021','23000',50,20000); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PARTICIPATED values('10045','23005',51,90000); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PARTICIPATED values('10067','23008',57,28000); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PARTICIPATED values('10089','23002',60,70000); 
+
+  
+
+1 row created. 
+
+  
+
+SQL> insert into PARTICIPATED values('10021','23003',61,50000); 
+
+update PARTICIPATED set damage_amount=25000 where report_number=12 and regno='23008'; 
+
+select * from participated; 
+
+select constraint_name from all_constraints where table_name='PARTICIPATED' and constraint_type='R'; 
+
+CONSTRAINT_NAME 
+SYS_C0063839 SYS_C0063840 SYS_C0063841 
+
+SQL> alter table PARTICIPATED drop constraint SYS_C0063841; 
+
+Table altered. 
+
+SQL> alter table PARTICIPATED add constraint fk1 foreign key(report_number) references ACCIDENT on delete cascade; 
+
+Table altered. 
+
+SQL> delete from accident where (extract(year from accd_date)=23); 
+
+0 rows deleted. 
+
+SQL> delete from accident where extract(year from accd_date)=2023; 
+
+1 row deleted. 
+
+SQL> select * from ACCIDENT; 
+
+REPORT_NUMBER ACCD_DATE LOCATION 
+
+ 
+
+      50 14-JAN-22 Haryana 
+       51 16-JAN-22 Haryana 
+       57 20-JAN-22 Gujarat 
+       60 14-FEB-22 Tamil nadu 
+       61 14-MAR-22 Darjeeling 
+
+alter table OWNS add Model_name varchar(10); 
+
+Table altered. 
+
+SQL> select* from owns; 
+
+DRIVER_ID# REGNO MODEL_NAME 
+
+10021              23000  
+
+10021              23003 
+
+ 10045             23005  
+
+10067              23008  
+
+10089             23002 
+
+alter table owns drop column model_name; 
+
+  
+
+Table altered. 
+
+  
+
+SQL> select * from owns; 
+
+  
+
+DRIVER_ID#                     REGNO 
+------------------------------ -------------------- 
+
+10021                          23000 
+
+10021                          23003 
+
+10045                          23005 
+
+10067                          23008 
+
+10089                          23002 
+
+Alter check constraint left 
+
+Lab4 
+
+insert into accident values(49,'23-may-2008','Delhi'); 
+
+1 row created. 
+
+SQL> insert into accident values(48,'20-may-2008','Gurgaon'); 
+
+1 row created. 
+
+SQL> insert into accident values(47,'23-april-2008','pune'); 
+
+1 row created. 
+
+SQL> select* from accident; 
+
+REPORT_NUMBER ACCD_DATE LOCATION 
+
+ 
+
+      50 14-JAN-22 Haryana 
+       51 16-JAN-22 Haryana 
+       57 20-JAN-22 Gujarat 
+       60 14-FEB-22 Tamil nadu 
+       61 14-MAR-22 Darjeeling 
+       49 23-MAY-08 Delhi 
+       48 20-MAY-08 Gurgaon 
+       47 23-APR-08 pune 
+  
+
+8 rows selected. 
+
+SQL> select count(report_number) from accident where extract(year from accd_date)=2008; 
+
+COUNT(REPORT_NUMBER) 
+
+              3 
+PERSON (driver_id#: varchar(30), name: varchar(50), address:varchar(100) 
+
+ CAR (regno: varchar(20), model: varchar(30), Year:int)  
+
+ACCIDENT (report_number: int, accd_date: date, location: varchar(50)) OWNS (driver_id#: varchar(30), regno: varchar(20))  
+
+PARTICIPATED (driver_id#: varchar(30), regno: varchar(20), report_number: int, damage_amount: int) 
+
+select* from participated; 
+
+ 
+
+DRIVER_ID# REGNO REPORT_NUMBER DAMAGE_AMOUNT 
+
+ 
+
+10021 23000 50 20000  
+
+10045 23005 51 90000  
+
+10067 23008 57 90000  
+
+10089 23002 60 90000  
+
+10021 23003 61 50000 
+
+ 
+
+SQL> insert into car values('230010','Honda',2005); 
+
+1 row created. 
+
+SQL> select* from car; 
+
+REGNO MODEL YEAR 
+
+ 
+
+23002 Honda 2010  
+
+23008 Maruti Sazuki 2010  
+
+23005 Honda 2009  
+
+23003 Toyota 2013 
+
+ 23000 Honda 2004  
+
+230010 Honda 2005 
+
+6 rows selected. 
+
+SQL> select count(driver_id#) from car natural join participated where model='Honda'; 
+
+COUNT(DRIVER_ID#) 
+
+           3 
+
+select* from participated; 
+
+DRIVER_ID# REGNO REPORT_NUMBER DAMAGE_AMOUNT 
+
+ 
+
+10021 23000 50 20000 10045 23005 51 90000 10067 23008 57 90000 10089 23002 60 90000 10021 23003 61 50000 
+
+SQL> select* from person; 
+
+DRIVER_ID# 
+
+NAME 
+
+ADDRESS 
+
+10021 Ram Sohna Road 
+
+10026 Sita Delhi 
+
+DRIVER_ID# 
+
+NAME 
+
+ADDRESS 
+
+10045 Siya Orchid Road 
+
+10067 Hari 
+
+DRIVER_ID# 
+
+NAME 
+
+ADDRESS 
+
+Vatika 
+
+10089 Riya Mall Road 
+
+select name, count(driver_id#) as "No. of Accidents",sum(damage_amount) as"Total Damage Amount"  from person natural join participated group by name order by "Total Damage Amount" desc; 
+
+NAME No. of Accidents 
+
+ 
+
+Total Damage Amount 
+
+Siya 1 90000 
+
+Riya 1 90000 
+
+Hari 1 90000 
+
+NAME No. of Accidents 
+
+ 
+
+Total Damage Amount 
+
+Ram 2 70000 
+
+select name from person where driver_id# not in(select driver_id# from participated); 
+
+NAME 
+
+Sita 
+
+ 
+
+insert into accident values(62,'13-April-2022','Kerala'); 
+
+  
+
+1 row created. 
+
+insert into car values('10021','Hyundai',2002); 
+
+1 row created. 
+
+SQL> insert into car values('23006','Toyota',2001); 
+
+1 row created. 
+SQL> insert into owns values('10021','23006'); 
+
+1 row created. 
+
+SQL> insert into PARTICIPATED values('10021','23006',62,40000); 
+
+1 row created. 
+
+SQL> select name from person natural join accident natural join participated where count(driver_id#)>2 and where extract(year from accd_date)=2022; select name from person natural join accident natural join participated where count(driver_id#)>2 and where extract(year from accd_date)=2022 * ERROR at line 1: ORA-00934: group function is not allowed here 
+
+ 
